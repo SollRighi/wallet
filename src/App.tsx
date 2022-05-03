@@ -1,25 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import styled from "styled-components";
+import { Cadastro } from "./Components/Body/Cadastro";
+import { Lista } from "./Components/Body/Lista";
+import { Header } from "./Components/Header";
+
+const StyleBody = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  gap: 150px;
+`;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header header="Wallet"></Header>
+      <br />
+      <br />
+      <StyleBody>
+        <Cadastro />
+        <Lista />
+      </StyleBody>
+    </>
   );
 }
 
