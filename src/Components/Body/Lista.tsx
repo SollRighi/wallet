@@ -8,8 +8,18 @@ import {
   Td,
   Tfoot,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { RegistroCarteira } from "../../App";
 
-export const Lista = () => {
+interface TextoTabela {
+  arrayDados: RegistroCarteira[];
+}
+; 
+export const Lista = (props: TextoTabela) => {
+  console.log('render lista')
+
+  const [registroSelecionado, setRegistroSelecionado] = useState<RegistroCarteira>() 
+
   return (
     <TableContainer>
       <Table variant="simple" size="sm">
@@ -17,20 +27,22 @@ export const Lista = () => {
           <Tr>
             <Th color="#78e69b">DATA</Th>
             <Th color="#78e69b">DESCRIÇÃO</Th>
-            <Th color="#78e69b" isNumeric>
-              VALOR
-            </Th>
+            <Th color="#78e69b" isNumeric>VALOR</Th>
             <Th color="#78e69b">TIPO</Th>
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>inches</Td>
-            <Td>millimetres (mm)</Td>
-            <Td isNumeric>25.4</Td>
-            <Td>25.4</Td>
-          </Tr>
-          <Tr>
+          {
+            props.arrayDados.map((registro) => (
+              <Tr key = {registro.id} onClick={() => setRegistroSelecionado(registro)}>
+                <Td>{registro.descricao}</Td>
+                <Td>{registro.valor}</Td>
+                <Td isNumeric>{registro.tipo}</Td>
+                <Td>{registro.data}</Td>
+              </Tr>
+            ))
+          }
+          {/* <Tr>
             <Td>feet</Td>
             <Td>centimetres (cm)</Td>
             <Td isNumeric>30.48</Td>
@@ -41,17 +53,25 @@ export const Lista = () => {
             <Td>metres (m)</Td>
             <Td isNumeric>0.91444</Td>
             <Td>0.91444</Td>
-          </Tr>
+          </Tr> */}
         </Tbody>
         <Tfoot>
           <Tr>
             <Th>TOTAL</Th>
-            <Th>into</Th>
-            <Th isNumeric>multiply by</Th>
-            <Th>multiply by</Th>
+            <Th> </Th>
+            <Th isNumeric> </Th>
+            <Th> </Th>
           </Tr>
         </Tfoot>
       </Table>
+
+      {
+        registroSelecionado && 
+
+        <h1> 
+          id selecionado: {registroSelecionado.descricao}
+        </h1>
+      }
     </TableContainer>
   );
 };

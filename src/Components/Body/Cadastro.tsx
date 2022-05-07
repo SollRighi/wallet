@@ -23,6 +23,8 @@ const StyleOption = styled.option`
 `;
 
 export const Cadastro = (props: Salvar) => {
+
+  console.log('render cadastro')
   
   const [descricao, setDescricao] = useState<string>("");
   const [valor, setValor] = useState<string>("");
@@ -61,14 +63,14 @@ export const Cadastro = (props: Salvar) => {
             value={tipo}
             onChange={(e) => setTipo(e.target.value)}
           >
-            <StyleOption value="option1">Entrada</StyleOption>
-            <StyleOption value="option2">Saída</StyleOption>
+            <StyleOption value="E">Entrada</StyleOption>
+            <StyleOption value="S">Saída</StyleOption>
           </Select>
         </FormControl>
       </Flex>
       <br />
       <FormControl color="white">
-        <FormLabel htmlFor="date">Data</FormLabel>
+        <FormLabel htmlFor="date">Data</FormLabel>  
         <Input
           id="date"
           type="date"

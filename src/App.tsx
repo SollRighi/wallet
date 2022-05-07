@@ -1,3 +1,4 @@
+import { Td, Tr } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 import { Cadastro } from "./Components/Body/Cadastro";
@@ -11,7 +12,8 @@ const StyleBody = styled.div`
   gap: 150px;
 `;
 
-interface TypeObjeto {
+export interface RegistroCarteira {
+  id: number;
   descricao: string;
   valor: string;
   tipo: string;
@@ -20,10 +22,13 @@ interface TypeObjeto {
 
 function App() {
 
-  const [arrayDados, setArrayDados] = useState<TypeObjeto[]>([])
+  console.log('render app')
+
+  const [arrayDados, setArrayDados] = useState<RegistroCarteira[]>([])
 
   function salvarDados (descricao: string, valor: string, tipo: string, data: string) {
     const objetoDados = {
+      id: Date.now(),
       descricao,
       valor,
       tipo,
@@ -33,9 +38,8 @@ function App() {
     const novoArray = [...arrayDados, objetoDados]
 
     setArrayDados(novoArray)
-    
-  }
 
+  }
 
   return (
     <>
@@ -44,8 +48,10 @@ function App() {
       <br />
       <StyleBody>
         <Cadastro aoClicar={(descricao:string, valor:string, tipo: string, data: string) => salvarDados(descricao, valor, tipo, data)}/>
-        <Lista />
-      </StyleBody>
+        <Lista 
+          arrayDados={arrayDados}
+        />
+      </StyleBody> 
     </>
   );
 }
