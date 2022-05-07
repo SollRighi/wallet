@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { Cadastro } from "./Components/Body/Cadastro";
 import { Lista } from "./Components/Body/Lista";
@@ -11,25 +11,31 @@ const StyleBody = styled.div`
   gap: 150px;
 `;
 
+interface TypeObjeto {
+  descricao: string;
+  valor: string;
+  tipo: string;
+  data: string;
+}
+
 function App() {
-  let descricao = document.getElementById("descricao");
-  let valor = document.getElementById("valor");
-  let tipo = document.getElementById("tipo");
-  let data = document.getElementById("date");
 
-  const dados = {
-    descricao: descricao,
-    valor: valor,
-    tipo: tipo,
-    data: data,
-  };
+  const [arrayDados, setArrayDados] = useState<TypeObjeto[]>([])
 
-  const [dadosSalvos, setDadosSalvos] = useState({});
+  function salvarDados (descricao: string, valor: string, tipo: string, data: string) {
+    const objetoDados = {
+      descricao,
+      valor,
+      tipo,
+      data
+    }
 
-  function salvarDados() {
-    setDadosSalvos(dados);
-    console.log(dados);
+    const novoArray = [...arrayDados, objetoDados]
+
+    setArrayDados(novoArray)
+    
   }
+
 
   return (
     <>
@@ -37,7 +43,7 @@ function App() {
       <br />
       <br />
       <StyleBody>
-        <Cadastro aoClicar={() => salvarDados()} />
+        <Cadastro aoClicar={(descricao:string, valor:string, tipo: string, data: string) => salvarDados(descricao, valor, tipo, data)}/>
         <Lista />
       </StyleBody>
     </>

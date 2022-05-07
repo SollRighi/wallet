@@ -6,11 +6,12 @@ import {
   Input,
   Select,
 } from "@chakra-ui/react";
+import { getValue } from "@testing-library/user-event/dist/utils";
 import { useState } from "react";
 import styled from "styled-components";
 
 interface Salvar {
-  aoClicar?: () => void;
+  aoClicar: (descricao: string, valor:string, tipo: string, data: string) => void;
 }
 
 const StyleCadastro = styled.div`
@@ -22,10 +23,12 @@ const StyleOption = styled.option`
 `;
 
 export const Cadastro = (props: Salvar) => {
+  
   const [descricao, setDescricao] = useState<string>("");
   const [valor, setValor] = useState<string>("");
   const [tipo, setTipo] = useState<string>("");
   const [data, setData] = useState<string>("");
+
 
   return (
     <StyleCadastro>
@@ -35,6 +38,7 @@ export const Cadastro = (props: Salvar) => {
           id="descricao"
           value={descricao}
           onChange={(e) => setDescricao(e.target.value)}
+
         />
       </FormControl>
       <br />
@@ -46,6 +50,7 @@ export const Cadastro = (props: Salvar) => {
             type="number"
             value={valor}
             onChange={(e) => setValor(e.target.value)}
+
           />
         </FormControl>
         <br />
@@ -76,10 +81,17 @@ export const Cadastro = (props: Salvar) => {
         width="100%"
         colorScheme="teal"
         variant="outline"
-        onClick={props.aoClicar}
+        onClick={() => {
+          props.aoClicar(descricao, valor, tipo, data)
+          setDescricao("")
+          setValor("")
+          setTipo("")
+          setData("")
+        }}
       >
         Salvar
       </Button>
     </StyleCadastro>
   );
 };
+
