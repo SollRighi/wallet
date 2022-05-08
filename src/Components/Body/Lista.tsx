@@ -8,17 +8,31 @@ import {
   Td,
   Tfoot,
 } from "@chakra-ui/react";
+import { Item } from "framer-motion/types/components/Reorder/Item";
 import { useState } from "react";
+import styled from "styled-components";
 import { RegistroCarteira } from "../../App";
 
 interface TextoTabela {
   arrayDados: RegistroCarteira[];
+  setRegistroSelecionado: (registro: RegistroCarteira) => void
+  registroSelecionado: RegistroCarteira | undefined
 }
 ; 
 export const Lista = (props: TextoTabela) => {
   console.log('render lista')
+  
+  const total = props.arrayDados.reduce((valorAnterior, registro) => {
 
-  const [registroSelecionado, setRegistroSelecionado] = useState<RegistroCarteira>() 
+    if (registro.tipo == "E") {
+      return valorAnterior + Number(registro.valor);
+
+    } else {
+      return valorAnterior - Number(registro.valor);
+    }
+
+  }, 0)
+  
 
   return (
     <TableContainer>
@@ -34,44 +48,29 @@ export const Lista = (props: TextoTabela) => {
         <Tbody>
           {
             props.arrayDados.map((registro) => (
-              <Tr key = {registro.id} onClick={() => setRegistroSelecionado(registro)}>
-                <Td>{registro.descricao}</Td>
-                <Td>{registro.valor}</Td>
-                <Td isNumeric>{registro.tipo}</Td>
-                <Td>{registro.data}</Td>
-              </Tr>
+              <Tr
+                key = {registro.id}
+                onClick={() => props.setRegistroSelecionado(registro)}
+                background={registro.id == props.registroSelecionado?.id ? "#7ccc97" : "unset"}
+              >
+                  <Td>{registro.data}</Td>
+                  <Td>{registro.descricao}</Td>
+                  <Td isNumeric>{registro.valor}</Td>
+                  <Td>{registro.tipo}</Td>
+              </Tr> 
             ))
           }
-          {/* <Tr>
-            <Td>feet</Td>
-            <Td>centimetres (cm)</Td>
-            <Td isNumeric>30.48</Td>
-            <Td>30.48</Td>
-          </Tr>
-          <Tr>
-            <Td>yards</Td>
-            <Td>metres (m)</Td>
-            <Td isNumeric>0.91444</Td>
-            <Td>0.91444</Td>
-          </Tr> */}
         </Tbody>
         <Tfoot>
           <Tr>
             <Th>TOTAL</Th>
             <Th> </Th>
-            <Th isNumeric> </Th>
+            <Th> {total} </Th>
             <Th> </Th>
           </Tr>
         </Tfoot>
       </Table>
-
-      {
-        registroSelecionado && 
-
-        <h1> 
-          id selecionado: {registroSelecionado.descricao}
-        </h1>
-      }
+      
     </TableContainer>
   );
 };

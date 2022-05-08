@@ -70,7 +70,7 @@ export const Cadastro = (props: Salvar) => {
       </Flex>
       <br />
       <FormControl color="white">
-        <FormLabel htmlFor="date">Data</FormLabel>  
+        <FormLabel htmlFor="date">DATA</FormLabel>  
         <Input
           id="date"
           type="date"
