@@ -1,4 +1,4 @@
-import { filter, Td, Tr, useToast } from "@chakra-ui/react";
+import { filter, propNames, Td, Tr, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 import { Cadastro } from "./Components/Body/Cadastro";
@@ -15,8 +15,10 @@ const StyleBody = styled.div`
 `;
 
 const StyleDeletarEditar = styled.div`
-  position: absolute;
-  right: 400px;
+  display: flex;
+  justify-content: space-around;
+  margin: 50px;
+
 `
 
 export interface RegistroCarteira {
@@ -35,6 +37,7 @@ function App() {
   const [arrayDados, setArrayDados] = useState<RegistroCarteira[]>([])
 
   const [registroSelecionado, setRegistroSelecionado] = useState<RegistroCarteira>() 
+  const [editando, setEditando] = useState<boolean>(false) 
 
   function salvarDados (descricao: string, valor: string, tipo: string, data: string, remove: any) {
 
@@ -48,18 +51,43 @@ function App() {
       })
     } else {
 
-      const objetoDados = {
-        id: Date.now(),
-        descricao,
-        valor,
-        tipo,
-        data,
-        remove
+      if (editando) {
+        
+        const novoArray = [...arrayDados] 
+        
+        const registroEditando = novoArray.find(registro => {
+          if (registro.id == registroSelecionado?.id) {
+            return registro
+          } 
+        })
+
+        if(!registroEditando) {
+          return
+        }
+        registroEditando.descricao = descricao
+        registroEditando.valor = valor
+        registroEditando.tipo = tipo
+        registroEditando.data = data
+
+        setArrayDados(novoArray)
+
+      } else {
+
+        const objetoDados = {
+          id: Date.now(),
+          descricao,
+          valor,
+          tipo,
+          data,
+          remove
+        }
+    
+        const novoArray = [...arrayDados, objetoDados]
+    
+        setArrayDados(novoArray)
       }
-  
-      const novoArray = [...arrayDados, objetoDados]
-  
-      setArrayDados(novoArray)
+
+      setEditando(false)
 
     }
   }
@@ -76,6 +104,19 @@ function App() {
         
   }
 
+  function editaLinha () {
+
+    // const registroSelecionado = arrayDados.find(registro => {
+    //   if (registro.id == registroSelecionado?.id) {
+    //     return registro
+    //   } 
+    // })
+
+    console.log(registroSelecionado)
+    setEditando(true)
+        
+  }
+
  
   return (
     <>
@@ -83,17 +124,23 @@ function App() {
       <br />
       <br />
       <StyleBody>
-        <Cadastro aoClicar={(descricao:string, valor:string, tipo: string, data: string, remove?: any) => salvarDados(descricao, valor, tipo, data, remove)}/>
-        <Lista 
-          arrayDados={arrayDados}
-          setRegistroSelecionado={setRegistroSelecionado}
+        <Cadastro
+          aoClicar={(descricao:string, valor:string, tipo: string, data: string, remove?: any) => salvarDados(descricao, valor, tipo, data, remove)}
           registroSelecionado={registroSelecionado}
+          estaEditando={editando}
         />
+        <div>
+          <Lista 
+            arrayDados={arrayDados}
+            setRegistroSelecionado={setRegistroSelecionado}
+            registroSelecionado={registroSelecionado}
+          />
+          <StyleDeletarEditar>
+            <Deletar deletar="Excluir" aoClicar={() => deleteLinha ()}/>
+            <Editar editar="Editar" aoClicar={() => editaLinha()}/>
+          </StyleDeletarEditar>
+        </div>
       </StyleBody> 
-      <StyleDeletarEditar>
-      <Deletar deletar="Excluir" aoClicar={() => deleteLinha ()}/>
-      {/* <Editar editar="Editar" aoClicar={() => editaLinha()}/> */}
-      </StyleDeletarEditar>
     </>
   );
 }

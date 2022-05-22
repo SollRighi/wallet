@@ -20,7 +20,6 @@ interface TextoTabela {
 }
 ; 
 export const Lista = (props: TextoTabela) => {
-  console.log('render lista')
   
   const total = props.arrayDados.reduce((valorAnterior, registro) => {
 

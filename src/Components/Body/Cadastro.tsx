@@ -4,14 +4,16 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Select,
+  Select
 } from "@chakra-ui/react";
-import { getValue } from "@testing-library/user-event/dist/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { RegistroCarteira } from "../../App";
 
-interface Salvar {
+interface ICadastro {
   aoClicar: (descricao: string, valor:string, tipo: string, data: string) => void;
+  registroSelecionado: RegistroCarteira | undefined
+  estaEditando: boolean
 }
 
 const StyleCadastro = styled.div`
@@ -22,15 +24,21 @@ const StyleOption = styled.option`
   color: black;
 `;
 
-export const Cadastro = (props: Salvar) => {
-
-  console.log('render cadastro')
+export const Cadastro = (props: ICadastro) => {
   
   const [descricao, setDescricao] = useState<string>("");
   const [valor, setValor] = useState<string>("");
   const [tipo, setTipo] = useState<string>("");
   const [data, setData] = useState<string>("");
 
+  useEffect(() => {
+    if (props.estaEditando && props.registroSelecionado) {
+      setDescricao(props.registroSelecionado.descricao)
+      setValor(props.registroSelecionado.valor)
+      setTipo(props.registroSelecionado.tipo)
+      setData(props.registroSelecionado.data)
+    }
+  }, [props.estaEditando, props.registroSelecionado])
 
   return (
     <StyleCadastro>

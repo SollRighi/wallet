@@ -9,7 +9,7 @@ interface textoBotao {
 export const Editar = (props: textoBotao) => {
   return (
     <>
-      <Button colorScheme='teal' variant='outline'>
+      <Button colorScheme='teal' variant='outline' onClick={props.aoClicar}>
         {props.editar}
       </Button>
     </>
